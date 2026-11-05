@@ -1,0 +1,142 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Phase 3: Primitive Definition ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function emailVerified() {
+      return request.auth.token.email_verified == true;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // --- Phase 4: Validation Blueprints ---
+
+    function isValidProfile(data) {
+      return data.keys().hasAll(['email', 'createdAt', 'updatedAt']) &&
+             data.email is string && data.email.size() <= 256 &&
+             (data.get('displayName', '') is string && data.get('displayName', '').size() <= 128) &&
+             (data.get('photoURL', '') is string && data.get('photoURL', '').size() <= 1024);
+    }
+
+    function isValidTrack(data) {
+      return data.keys().hasAll(['name', 'status', 'userId', 'createdAt', 'updatedAt']) &&
+             data.name is string && data.name.size() <= 128 &&
+             data.status in ['pending', 'analyzed', 'mastered'] &&
+             data.userId == request.auth.uid &&
+             (data.get('artist', '') is string && data.get('artist', '').size() <= 128) &&
+             (data.get('bpm', 0) is number) &&
+             (data.get('key', 'C') is string && data.get('key', 'C').size() <= 32) &&
+             (data.get('duration', 0) is number) &&
+             (data.get('metadata', {}) is map) &&
+             (data.get('settings', {}) is map);
+    }
+
+    function isValidPreset(data) {
+      return data.keys().hasAll(['name', 'settings', 'userId', 'createdAt']) &&
+             data.name is string && data.name.size() <= 128 &&
+             data.settings is map &&
+             data.userId == request.auth.uid;
+    }
+
+    function isValidExportPreset(data) {
+      return data.keys().hasAll(['name', 'settings', 'userId', 'createdAt']) &&
+             data.name is string && data.name.size() <= 128 &&
+             data.settings is map &&
+             data.userId == request.auth.uid;
+    }
+
+    // Healthcheck / Connection Probe
+    match /test/connection {
+      allow get: if true;
+    }
+
+    // User Profile
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && emailVerified() && isValidId(userId) &&
+                    isValidProfile(incoming()) &&
+                    incoming().createdAt == request.time &&
+                    incoming().updatedAt == request.time;
+      allow update: if isOwner(userId) && emailVerified() &&
+                    isValidProfile(incoming()) &&
+                    incoming().updatedAt == request.time &&
+                    incoming().email == existing().email &&
+                    incoming().createdAt == existing().createdAt &&
+                    incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'updatedAt']);
+    }
+
+    // Tracks
+    match /users/{userId}/tracks/{trackId} {
+      // Secure List Queries
+      allow list: if isOwner(userId);
+      allow get: if isOwner(userId);
+      
+      allow create: if isOwner(userId) && emailVerified() && isValidId(trackId) &&
+                    isValidTrack(incoming()) &&
+                    incoming().createdAt == request.time &&
+                    incoming().updatedAt == request.time;
+                    
+      allow update: if isOwner(userId) && emailVerified() &&
+                    isValidTrack(incoming()) &&
+                    incoming().updatedAt == request.time &&
+                    incoming().userId == existing().userId &&
+                    incoming().createdAt == existing().createdAt &&
+                    (
+                      incoming().diff(existing()).affectedKeys().hasOnly(['settings', 'metadata', 'status', 'name', 'artist', 'bpm', 'key', 'duration', 'updatedAt'])
+                    );
+                    
+      allow delete: if isOwner(userId) && emailVerified();
+    }
+
+    // Presets
+    match /users/{userId}/presets/{presetId} {
+      allow list: if isOwner(userId);
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && emailVerified() && isValidId(presetId) &&
+                    isValidPreset(incoming()) &&
+                    incoming().createdAt == request.time;
+      allow update: if isOwner(userId) && emailVerified() &&
+                    isValidPreset(incoming()) &&
+                    incoming().userId == existing().userId &&
+                    incoming().createdAt == existing().createdAt;
+      allow delete: if isOwner(userId) && emailVerified();
+    }
+
+    // Export Presets
+    match /users/{userId}/export_presets/{presetId} {
+      allow list: if isOwner(userId);
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && emailVerified() && isValidId(presetId) &&
+                    isValidExportPreset(incoming()) &&
+                    incoming().createdAt == request.time;
+      allow update: if isOwner(userId) && emailVerified() &&
+                    isValidExportPreset(incoming()) &&
+                    incoming().userId == existing().userId &&
+                    incoming().createdAt == existing().createdAt;
+      allow delete: if isOwner(userId) && emailVerified();
+    }
+  }
+}

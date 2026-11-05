@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Glow filter -->
+    <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="neon-glow-subtle" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Gradients -->
+    <radialGradient id="bg-glow" cx="50%" cy="50%" r="45%">
+      <stop offset="0%" stop-color="#1db954" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="emerald-cyan" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#12592b" stop-opacity="0.2" />
+      <stop offset="25%" stop-color="#1db954" stop-opacity="1" />
+      <stop offset="50%" stop-color="#00f2fe" stop-opacity="1" />
+      <stop offset="75%" stop-color="#1db954" stop-opacity="1" />
+      <stop offset="100%" stop-color="#12592b" stop-opacity="0.2" />
+    </linearGradient>
+
+    <linearGradient id="text-wave-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1db954" />
+      <stop offset="50%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#00f2fe" />
+    </linearGradient>
+
+    <!-- Equalizer pattern to fill the text -->
+    <pattern id="eq-bars" width="10" height="80" patternUnits="userSpaceOnUse">
+      <!-- We will draw 4 vertical bars of different heights inside this repeating pattern to simulate an EQ -->
+      <rect x="1" y="5" width="1.5" height="70" fill="#1db954" opacity="0.3" rx="0.5" />
+      <rect x="3" y="15" width="1.5" height="50" fill="#1db954" opacity="0.6" rx="0.5" />
+      <rect x="5.5" y="0" width="1.8" height="80" fill="#1db954" opacity="0.9" rx="0.5" />
+      <rect x="8" y="25" width="1.5" height="30" fill="#00f2fe" opacity="0.7" rx="0.5" />
+    </pattern>
+  </defs>
+
+  <!-- Deep space backboard -->
+  <rect width="500" height="500" fill="#070709" />
+  
+  <!-- Central green environment glow -->
+  <circle cx="250" cy="250" r="180" fill="url(#bg-glow)" />
+
+  <!-- Cyber grid -->
+  <g stroke="#1db954" stroke-width="0.5" opacity="0.05">
+    <line x1="50" y1="250" x2="450" y2="250" />
+    <path d="M 50,150 L 450,150 M 50,350 L 450,350 M 150,50 L 150,450 M 350,50 L 350,450" />
+  </g>
+
+  <!-- WAVEFORM PATHS THAT DIRECTLY WRAP THE TEXT AND OUTLINE THE SYSTEM -->
+  <!-- Top encapsulating soundwave path -->
+  <path d="M 30,250 
+           Q 70,250 90,190 
+           T 140,230 
+           C 180,180 220,150 250,150
+           C 280,150 320,180 360,230 
+           T 410,190
+           Q 430,250 470,250" 
+        fill="none" 
+        stroke="url(#emerald-cyan)" 
+        stroke-width="3" 
+        stroke-linecap="round"
+        filter="url(#neon-glow-subtle)" />
+
+  <!-- Bottom encapsulating soundwave path -->
+  <path d="M 30,250 
+           Q 70,250 90,310 
+           T 140,270 
+           C 180,320 220,350 250,350
+           C 280,350 320,320 360,270 
+           T 410,310
+           Q 430,250 470,250" 
+        fill="none" 
+        stroke="url(#emerald-cyan)" 
+        stroke-width="3" 
+        stroke-linecap="round"
+        filter="url(#neon-glow-subtle)" />
+
+  <!-- Dynamic multi-frequency spectrum peaks bridging the text -->
+  <g stroke="#1db954" stroke-width="1.5" opacity="0.4">
+    <!-- Vertical wave connectors matching name intervals -->
+    <!-- These act as the soundwave columns framing the logo -->
+    <line x1="140" y1="230" x2="140" y2="270" stroke-dasharray="2,3" />
+    <line x1="180" y1="195" x2="180" y2="305" stroke-dasharray="1,4" />
+    <line x1="220" y1="165" x2="220" y2="335" stroke-dasharray="3,3" />
+    <line x1="250" y1="150" x2="250" y2="350" stroke-dasharray="1,5" stroke-width="2" />
+    <line x1="280" y1="165" x2="280" y2="335" stroke-dasharray="3,3" />
+    <line x1="320" y1="195" x2="320" y2="305" stroke-dasharray="1,4" />
+    <line x1="360" y1="230" x2="360" y2="270" stroke-dasharray="2,3" />
+  </g>
+
+  <!-- Stylized central active wave flowing directly through the letters -->
+  <path d="M 30,250 
+           L 60,250 
+           L 75,235 
+           L 90,265 
+           L 105,210 
+           L 120,285 
+           L 135,240 
+           L 150,260
+           L 170,240
+           M 330,260
+           L 350,240
+           L 365,260
+           L 380,215
+           L 395,290
+           L 410,230
+           L 425,265
+           L 440,250
+           L 470,250" 
+        fill="none" 
+        stroke="#1db954" 
+        stroke-width="2" 
+        stroke-linecap="round"
+        opacity="0.7" />
+
+  <!-- The beautiful Name-wave integration -->
+  <g>
+    <!-- Background glowing text silhouette -->
+    <text x="250" y="278" 
+          font-family="'Space Grotesk', 'Outfit', 'Inter', sans-serif"
+          font-size="64" 
+          font-weight="950" 
+          font-style="oblique"
+          letter-spacing="2"
+          text-anchor="middle" 
+          fill="none"
+          stroke="#1db954"
+          stroke-width="8"
+          stroke-linejoin="round"
+          opacity="0.3"
+          filter="url(#neon-glow)"
+    >K-3EATZ</text>
+
+    <!-- Main Text filled with equalizers (the text forms the wave) -->
+    <text id="logo-text-body"
+          x="250" y="278" 
+          font-family="'Space Grotesk', 'Outfit', 'Inter', sans-serif"
+          font-size="64" 
+          font-weight="950" 
+          font-style="oblique"
+          letter-spacing="2"
+          text-anchor="middle" 
+          fill="url(#eq-bars)"
+          stroke="url(#text-wave-grad)"
+          stroke-width="1.5"
+          filter="url(#neon-glow-subtle)"
+    >K-3EATZ</text>
+  </g>
+
+  <!-- Technical elements framing the master core -->
+  <!-- Subtle circular dial/decibel marks around the core -->
+  <path d="M 120,180 A 170,170 0 0,1 380,180" fill="none" stroke="#00f2fe" stroke-width="1" stroke-dasharray="1,15" opacity="0.3" />
+  <path d="M 120,320 A 170,170 0 0,0 380,320" fill="none" stroke="#1db954" stroke-width="1" stroke-dasharray="1,15" opacity="0.3" />
+
+  <!-- Bottom info display console -->
+  <text x="250" y="388" 
+        font-family="'JetBrains Mono', 'Fira Code', monospace" 
+        font-size="8.5" 
+        font-weight="bold" 
+        letter-spacing="8" 
+        text-anchor="middle" 
+        fill="#ffffff" 
+        opacity="0.4">NEURAL MASTER ENGINE</text>
+
+  <text x="250" y="405" 
+        font-family="'JetBrains Mono', 'Fira Code', monospace" 
+        font-size="7" 
+        font-weight="bold" 
+        letter-spacing="3" 
+        text-anchor="middle" 
+        fill="#1db954" 
+        opacity="0.8">SYSTEM STATUS: OPTIMIZED</text>
+</svg>

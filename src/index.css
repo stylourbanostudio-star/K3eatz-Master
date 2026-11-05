@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --obsidian: #0e0e10;
+  --obsidian-light: #161618;
+  --graphite: #2a2a2d;
+  --text-base: #e5e2e1;
+  --outline: #3a3a3c;
+  --glass: rgba(0, 0, 0, 0.4);
+  --glow-intensity: 1;
+}
+
+body.light-theme {
+  --obsidian: #f0f0f3;
+  --obsidian-light: #ffffff;
+  --graphite: #dedee4;
+  --text-base: #1c1c1f;
+  --outline: #c8c8cc;
+  --glass: rgba(255, 255, 255, 0.4);
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Grotesk", ui-monospace, SFMono-Regular, monospace;
+
+  /* Premium Obsidian Palette */
+  --color-obsidian: var(--obsidian);
+  --color-obsidian-light: var(--obsidian-light);
+  --color-graphite: var(--graphite);
+  
+  --color-primary: #1db954; /* Emerald Green */
+  --color-primary-glow: #53e076;
+  
+  --color-scarlet: #ff2e2e; /* Scarlet Red */
+  --color-amber: #ffb100; /* Safety Orange/Amber */
+  
+  --color-on-primary: #003914;
+  
+  --color-outline: var(--outline);
+  --color-glass: var(--glass);
+}
+
+@layer base {
+  body {
+    background-color: var(--obsidian);
+    color: var(--text-base);
+    @apply font-sans selection:bg-primary/30 selection:text-primary;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer utilities {
+  .hardware-panel {
+    background: linear-gradient(180deg, var(--obsidian-light) 0%, var(--obsidian) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  }
+
+  body.light-theme .hardware-panel {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .piano-black {
+    background: linear-gradient(135deg, var(--obsidian-light) 0%, var(--obsidian) 100%);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 10px 40px rgba(0,0,0,0.9);
+  }
+  
+  body.light-theme .piano-black {
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.03), 0 10px 25px rgba(0, 0, 0, 0.05);
+  }
+  
+  .glass-panel {
+    @apply bg-glass backdrop-blur-xl border border-white/10 shadow-2xl;
+  }
+  
+  .neon-glow-emerald {
+    filter: drop-shadow(0 0 calc(8px * var(--glow-intensity, 1)) rgba(29, 185, 84, calc(0.6 * var(--glow-intensity, 1))));
+  }
+  
+  .neon-glow-scarlet {
+    filter: drop-shadow(0 0 calc(10px * var(--glow-intensity, 1)) rgba(255, 46, 46, calc(0.5 * var(--glow-intensity, 1))));
+  }
+
+  .neon-glow-amber {
+    filter: drop-shadow(0 0 calc(8px * var(--glow-intensity, 1)) rgba(255, 177, 0, calc(0.4 * var(--glow-intensity, 1))));
+  }
+
+  .engraved-label {
+    @apply font-mono text-[9px] font-bold uppercase tracking-widest text-[#555] select-none;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(255,255,255,0.05);
+  }
+
+  body.light-theme .engraved-label {
+    @apply text-black/50;
+    text-shadow: 1px 1px 0 rgba(255,255,255,1), -1px -1px 0 rgba(0,0,0,0.1);
+  }
+
+  .cnc-knob {
+    background: linear-gradient(180deg, var(--graphite) 0%, var(--obsidian) 100%);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+    border: 1px solid #000;
+  }
+
+  body.light-theme .cnc-knob {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15), inset 0 1px 1px rgba(255,255,255,0.8);
+    border: 1px solid #c8c8cc;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background-color: var(--obsidian);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--graphite);
+    @apply rounded-full hover:bg-graphite/80;
+  }
+}
+
+/* Base style overrides to turn Dark elements to Soft Brushed Aluminum in theme-light */
+body.light-theme .text-white {
+  color: #1f1f23 !important;
+}
+body.light-theme .text-white\/90 {
+  color: rgba(31, 31, 35, 0.9) !important;
+}
+body.light-theme .text-white\/80 {
+  color: rgba(31, 31, 35, 0.8) !important;
+}
+body.light-theme .text-white\/70 {
+  color: rgba(31, 31, 35, 0.7) !important;
+}
+body.light-theme .text-white\/60 {
+  color: rgba(31, 31, 35, 0.6) !important;
+}
+body.light-theme .text-white\/50 {
+  color: rgba(31, 31, 35, 0.5) !important;
+}
+body.light-theme .text-white\/40 {
+  color: rgba(31, 31, 35, 0.4) !important;
+}
+body.light-theme .text-white\/30 {
+  color: rgba(31, 31, 35, 0.3) !important;
+}
+body.light-theme .text-white\/20 {
+  color: rgba(31, 31, 35, 0.2) !important;
+}
+body.light-theme .text-white\/10 {
+  color: rgba(31, 31, 35, 0.1) !important;
+}
+body.light-theme .text-white\/5 {
+  color: rgba(31, 31, 35, 0.05) !important;
+}
+
+body.light-theme .border-white\/5 {
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+body.light-theme .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+body.light-theme .border-white\/20 {
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+body.light-theme .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+body.light-theme .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.07) !important;
+}
+body.light-theme .bg-white\/15 {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+body.light-theme .bg-white\/20 {
+  background-color: rgba(0, 0, 0, 0.14) !important;
+}
+body.light-theme .bg-black {
+  background-color: #e4e4e9 !important;
+}
+body.light-theme .bg-black\/40 {
+  background-color: rgba(228, 228, 233, 0.4) !important;
+}
+body.light-theme .bg-black\/50 {
+  background-color: rgba(228, 228, 233, 0.5) !important;
+}
+body.light-theme .bg-black\/60 {
+  background-color: rgba(228, 228, 233, 0.6) !important;
+}
+body.light-theme .bg-obsidian {
+  background-color: var(--obsidian) !important;
+}
+body.light-theme .bg-obsidian-light {
+  background-color: var(--obsidian-light) !important;
+}
+body.light-theme .bg-graphite {
+  background-color: var(--graphite) !important;
+}
+body.light-theme .text-primary-glow {
+  color: #179d45 !important;
+}

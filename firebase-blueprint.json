@@ -1,0 +1,85 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "User Profile",
+      "description": "Public and private information for a user.",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string", "description": "The user's display name." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "photoURL": { "type": "string", "description": "The user's profile photo URL." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the profile was created." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "When the profile was last updated." }
+      },
+      "required": ["email", "createdAt", "updatedAt"]
+    },
+    "Track": {
+      "title": "Audio Track",
+      "description": "A track uploaded and managed by a user.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the track." },
+        "artist": { "type": "string", "description": "The artist name." },
+        "bpm": { "type": "number", "description": "Beats per minute." },
+        "key": { "type": "string", "description": "The musical key." },
+        "duration": { "type": "number", "description": "Duration in seconds." },
+        "status": { "type": "string", "enum": ["pending", "analyzed", "mastered"], "description": "Current processing status." },
+        "metadata": { "type": "object", "description": "Additional metadata." },
+        "settings": { "type": "object", "description": "Mastering DSP settings map." },
+        "userId": { "type": "string", "description": "The ID of the user who owns this track." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the track was created." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "When the track was last updated." }
+      },
+      "required": ["name", "status", "userId", "createdAt", "updatedAt"]
+    },
+    "Preset": {
+      "title": "Mastering Preset",
+      "description": "A saved set of mastering settings.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the preset." },
+        "settings": { "type": "object", "description": "The mastering settings object." },
+        "userId": { "type": "string", "description": "The ID of the user who owns this preset." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the preset was created." }
+      },
+      "required": ["name", "settings", "userId", "createdAt"]
+    },
+    "ExportPreset": {
+      "title": "Export Preset",
+      "description": "A saved set of export settings.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the preset." },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "formats": { "type": "array" },
+            "mp3Quality": { "type": "string" },
+            "ditherEnabled": { "type": "boolean" }
+          }
+        },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "settings", "userId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "Profile",
+      "description": "User profile documents."
+    },
+    "/users/{userId}/tracks/{trackId}": {
+      "schema": "Track",
+      "description": "Tracks belonging to a specific user."
+    },
+    "/users/{userId}/presets/{presetId}": {
+      "schema": "Preset",
+      "description": "Saved mastering presets for a user."
+    },
+    "/users/{userId}/export_presets/{presetId}": {
+      "schema": "ExportPreset",
+      "description": "Saved export configurations for a user."
+    }
+  }
+}

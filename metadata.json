@@ -1,0 +1,10 @@
+{
+  "name": "Remix K-3EATZ MASTER PRO",
+  "description": "Professional high-fidelity audio mastering workstation with AI analysis and cloud synchronization.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
